@@ -1,0 +1,7 @@
+streamlit
+sentence-transformers
+faiss-cpu  # Replace with faiss-gpu if using GPU
+numpy
+pandas
+transformers
+torch  # Specify version if needed, e.g., torch==2.0.1+cu117 for CUDA 11.7
