@@ -1,6 +1,5 @@
 streamlit
 faiss-cpu
-sentence-transformers
 pandas
 flask
 transformers==4.25.1
@@ -9,4 +8,7 @@ setuptools
 sentencepiece
 numpy<2
 safetensors
+sentence-transformers==2.2.2
 tokenizers==0.13.3
+
+
