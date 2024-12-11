@@ -10,5 +10,6 @@ numpy<2
 safetensors
 sentence-transformers==2.2.2
 tokenizers==0.13.3
+huggingface_hub==0.16.0
 
 
