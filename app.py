@@ -15,7 +15,21 @@ embedding_model = SentenceTransformer("sentence-transformers/all-distilroberta-v
 
 # Load the data (adjust the file path as necessary)
 data_path = 'preprocessed_conversations.csv'
+
+# Check if the file exists before loading
+if not os.path.exists(data_path):
+    st.error("Data file not found. Please check the file path.")
+    st.stop()
+
 df = pd.read_csv(data_path)
+
+# Check for required columns in the DataFrame
+required_columns = ['human_clean', 'gpt_clean']
+missing_columns = [col for col in required_columns if col not in df.columns]
+
+if missing_columns:
+    st.error(f"Missing columns: {', '.join(missing_columns)}")
+    st.stop()  # Stop the app if required columns are missing
 
 # Preprocess and combine human and GPT text into one document
 df['combined'] = df['human_clean'] + " " + df['gpt_clean']
@@ -79,10 +93,8 @@ def generate_response(query, k=5):
     retrieved_results = search_faiss(query, k)
     
     # Combine results into a context string
-    context = "\n".join([
-        f"User said: {result['human_clean']}\nResponse: {result['gpt_clean']}"
-        for result in retrieved_results[:3]  # Use only the most relevant results
-    ])
+    context = "\n".join([f"User said: {result['human_clean']}\nResponse: {result['gpt_clean']}" 
+                         for result in retrieved_results[:3]])  # Use only the most relevant results
 
     prompt = (
         f"Context:\n{context}\n\n"
