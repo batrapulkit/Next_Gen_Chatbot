@@ -1,16 +1,9 @@
 streamlit
-faiss-cpu
+sentence-transformers
+faiss-cpu  # Replace with faiss-gpu if using GPU
+numpy
 pandas
-flask
-transformers==4.25.1
-torch
+transformers
+torch  # Specify version if needed, e.g., torch==2.0.1+cu117 for CUDA 11.7
 setuptools
 sentencepiece
-numpy<2
-safetensors
-sentence-transformers==2.2.2
-huggingface_hub
-tokenizers --prefer-binary
-
-
-
