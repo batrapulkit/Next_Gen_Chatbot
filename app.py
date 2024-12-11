@@ -23,17 +23,6 @@ if not os.path.exists(data_path):
 
 df = pd.read_csv(data_path)
 
-# Check for required columns in the DataFrame
-required_columns = ['human_clean', 'gpt_clean']
-missing_columns = [col for col in required_columns if col not in df.columns]
-
-if missing_columns:
-    st.error(f"Missing columns: {', '.join(missing_columns)}")
-    st.stop()  # Stop the app if required columns are missing
-
-# Preprocess and combine human and GPT text into one document
-df['combined'] = df['human_clean'] + " " + df['gpt_clean']
-
 # Generate embeddings for each combined text
 embeddings = np.array([embedding_model.encode(text) for text in df['combined']])
 
