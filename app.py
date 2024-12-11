@@ -113,22 +113,22 @@ st.title("Empathetic Chatbot for Stress Management")
 # Textbox to input the query
 query = st.text_input("Ask a question about stress management:")
 
-# If the user submits a query
+# Displaying the response to the user
 if query:
-    # Displaying the response to the user
     st.write("Generating response...")
     response = generate_response(query)
     st.write(f"Chatbot Response: {response}")
 
-    # Option to enter another query
-    st.write("---")
-    query = st.text_input("Ask another question:")
+# Option for the user to continue the conversation with additional queries
+st.write("---")
+query = st.text_input("Ask another question:")
 
 # Enable multiple queries to be handled in sequence
 if query:
     with st.form(key='query_form'):
-        st.text_area('Chat with the Assistant', value='', height=200)
+        user_query = st.text_area('Chat with the Assistant', value='', height=200)
         submit_button = st.form_submit_button(label='Submit Query')
 
         if submit_button:
-            st.write(generate_response(query))
+            response = generate_response(user_query)
+            st.write(f"Chatbot Response: {response}")
