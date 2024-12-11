@@ -9,3 +9,4 @@ setuptools
 sentencepiece
 numpy<2
 safetensors
+tokenizers==0.13.3
