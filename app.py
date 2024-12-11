@@ -23,6 +23,17 @@ if not os.path.exists(data_path):
 
 df = pd.read_csv(data_path)
 
+# Check for required columns in the DataFrame
+required_columns = ['human', 'gpt']
+missing_columns = [col for col in required_columns if col not in df.columns]
+
+if missing_columns:
+    st.error(f"Missing columns: {', '.join(missing_columns)}")
+    st.stop()  # Stop the app if required columns are missing
+
+# Preprocess and combine human and GPT text into one document
+df['combined'] = df['human'] + " " + df['gpt']
+
 # Generate embeddings for each combined text
 embeddings = np.array([embedding_model.encode(text) for text in df['combined']])
 
@@ -82,7 +93,7 @@ def generate_response(query, k=5):
     retrieved_results = search_faiss(query, k)
     
     # Combine results into a context string
-    context = "\n".join([f"User said: {result['human_clean']}\nResponse: {result['gpt_clean']}" 
+    context = "\n".join([f"User said: {result['human']}\nResponse: {result['gpt']}" 
                          for result in retrieved_results[:3]])  # Use only the most relevant results
 
     prompt = (
@@ -102,22 +113,22 @@ st.title("Empathetic Chatbot for Stress Management")
 # Textbox to input the query
 query = st.text_input("Ask a question about stress management:")
 
-# Displaying the response to the user
+# If the user submits a query
 if query:
+    # Displaying the response to the user
     st.write("Generating response...")
     response = generate_response(query)
     st.write(f"Chatbot Response: {response}")
 
-# Option for the user to continue the conversation with additional queries
-st.write("---")
-query = st.text_input("Ask another question:")
+    # Option to enter another query
+    st.write("---")
+    query = st.text_input("Ask another question:")
 
 # Enable multiple queries to be handled in sequence
 if query:
     with st.form(key='query_form'):
-        user_query = st.text_area('Chat with the Assistant', value='', height=200)
+        st.text_area('Chat with the Assistant', value='', height=200)
         submit_button = st.form_submit_button(label='Submit Query')
 
         if submit_button:
-            response = generate_response(user_query)
-            st.write(f"Chatbot Response: {response}")
+            st.write(generate_response(query))
